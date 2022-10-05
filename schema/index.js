@@ -1,7 +1,62 @@
 import { gql } from 'apollo-server-micro';
 
 export const typeDefs = gql`
-    type Query {
-        greeting: String!
+    type User {
+        id: ID!
+        username: String!
+        email: String!
+        password: String!
     }
+
+    input UserInput {
+        username: String!
+        email: String!
+        password: String!
+    }
+
+    type AuthData {
+        userId: ID!
+        token: String!
+        username: String!
+    }
+
+    type Event {
+        id: ID!
+        title: String!
+        description: String!
+        price: Float!
+        date: String!
+        creator: User!
+    }
+
+    input EventInput {
+        title: String!
+        description: String!
+        price: Float!
+        date: String!
+    }
+    
+    type Booking {
+        id: ID! 
+        event: Event!
+        user: User!
+        createdAt: String!
+        updatedAt: String!
+    }
+
+    type Query {
+        events: [Event!]
+        bookings: [Booking!]
+        getUserEvents(userId: ID!): [Event]
+    }
+
+    type Mutation {
+        createUser(userInput: UserInput!): AuthData
+        createEvent(eventInput: EventInput!): Event
+        bookEvent(eventId: ID!): Booking
+        cancelBooking(bookingId: ID!): Event
+        login(email: String!, password: String!): AuthData
+        deleteEvent(eventId: ID!): [Event!]
+    }
+    
 `
