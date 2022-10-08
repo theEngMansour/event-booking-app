@@ -1,7 +1,7 @@
 import prisma from "lib/prisma";
 import langs from "site-settings/site-translations";
 import { UserInputError } from "apollo-server-micro";
-import { transformEvent, transformBooking } from "helper/transform";
+import { transformEvent } from "helper/transform";
 import { isLoggedin } from "middleware/isLoggedin";
 import { combineResolvers } from "graphql-resolvers";
 
