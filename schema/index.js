@@ -6,6 +6,8 @@ export const typeDefs = gql`
         username: String!
         email: String!
         password: String!
+        events: [Event]
+        bookings: [Booking]
     }
 
     input UserInput {
@@ -26,7 +28,9 @@ export const typeDefs = gql`
         description: String!
         price: Float!
         date: String!
+        creatorId: ID!
         creator: User!
+        bookings: [Booking]
     }
 
     input EventInput {
@@ -38,7 +42,9 @@ export const typeDefs = gql`
     
     type Booking {
         id: ID! 
+        eventId: ID!
         event: Event!
+        userId: ID!
         user: User!
         createdAt: String!
         updatedAt: String!

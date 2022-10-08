@@ -1,29 +1,38 @@
-import { ApolloServer } from 'apollo-server-micro';
-import { typeDefs } from 'schema';
-import { resolvers } from 'resolvers';
-import micro_cors from 'micro-cors';
+import prisma from "lib/prisma"; 
+import micro_cors from "micro-cors";
+import jwt from "jsonwebtoken";
+import { ApolloServer } from "apollo-server-micro";
+import { typeDefs } from "schema";
+import { resolvers } from "resolvers";
 
 const cors = micro_cors({
   origin:"https://studio.apollographql.com", 
-  allowMethods:["GET","POST"], 
-  allowHeaders:[
-    "Access-Control-Allow-Credentials",
-    "true","Content-Type",
-    "Access-Control-Allow-Origin",
-    "Access-Control-Allow-Headers"
-  ]
+  allowMethods:["GET","POST"]
 })
 
-const apolloServer = new ApolloServer({typeDefs, resolvers})
+const apolloServer = new ApolloServer({
+  typeDefs, 
+  resolvers, 
+  context: async ({ req }) => {
+    const auth = req ? req.headers.authorization : null
+    
+    if(auth) {
+      const decoded = jwt.verify(auth, process.env.JWT)
+      const user = await prisma.user.findUnique({ where: { id: decoded.id }})
+      return { user }
+    }
+  }
+})
+
 const startServer = apolloServer.start()
 
 export default cors(async function handler(req, res) {
-  if(req.method == 'OPTIONS') {
+  if(req.method == "OPTIONS") {
     res.end()
     return false
   }
   await startServer;
-  await apolloServer.createHandler({ path: '/api/graphql' })(req, res)
+  await apolloServer.createHandler({ path: "/api/graphql" })(req, res)
 })
 
 export const config = {
