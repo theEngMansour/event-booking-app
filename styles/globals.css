@@ -13,6 +13,8 @@ a {
 
 * {
   box-sizing: border-box;
+  direction: rtl;
+  text-align: right;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +23,6 @@ a {
   }
   body {
     color: white;
-    background: black;
+    background: #fafafa;
   }
 }

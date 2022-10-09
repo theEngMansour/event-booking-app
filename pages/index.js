@@ -2,9 +2,13 @@ import Head from 'next/head'
 import Image from 'next/image';
 import styles from '../styles/Home.module.css'
 import { FormattedMessage } from 'react-intl';
-
+import React, { useContext } from 'react';
+import { AuthContext } from "context"
 
 export default function Home() {
+  const { loggedIn, setLoggedIn } = useContext(AuthContext)
+
+  console.log(loggedIn)
   return (
     <div className={styles.container}>
       <Head>
@@ -15,7 +19,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          <a href="https://nextjs.org"><FormattedMessage id={'btn.continue'} /></a>
+          <a href="https://nextjs.org">Welcome</a>
         </h1>
 
         <p className={styles.description}>
