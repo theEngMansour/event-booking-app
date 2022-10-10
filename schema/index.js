@@ -54,6 +54,7 @@ export const typeDefs = gql`
         events: [Event!]
         bookings: [Booking!]
         getUserEvents(userId: ID!): [Event]
+        getIdEvents(eventId: ID!): Event
     }
 
     type Mutation {

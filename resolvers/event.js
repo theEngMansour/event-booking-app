@@ -17,6 +17,19 @@ export const eventResolver = {
         throw error;
       }
     },
+    getIdEvents: async (_, { eventId }) => {
+      try {
+        const event = await prisma.event.findUnique({
+          where: {
+            id: Number(eventId),
+          },
+          include: { creator: true },
+        });
+        return transformEvent(event);
+      } catch (error) {
+        throw error;
+      }
+    },
     getUserEvents: async (_, { userId }) => {
       try {
         const events = await prisma.event.findMany({
