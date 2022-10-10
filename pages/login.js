@@ -1,21 +1,24 @@
 import React, { useState, useContext } from "react";
-import { AuthContext } from "context";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "hooks/mutations";
-import { Storage } from "@capacitor/storage";
+import { useRouter } from "next/router";
+import { AuthContext } from "contexts";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setJwt } = useContext(AuthContext);
-
+  const { setToken, setUserName, setUserId } = useContext(AuthContext)
+  const router = useRouter();
+  
   const [login, { loading, data }] = useMutation(LOGIN, {
     onCompleted: (data) => {
-      Storage.set({
-        key: "accessToken",
-        value: data.login.token
-      });
-      setJwt(data.login.token);
+      document.cookie = `token = ${data.login.token};`;
+      document.cookie = `userId = ${data.login.userId};`;
+      document.cookie = `username = ${data.login.username};`;
+      setToken(data.login.token);
+      setUserName(data.login.username);
+      setUserId(data.login.userId);
+      router.push("/events");
     },
     onError: (error) => console.log(error.message),
   });

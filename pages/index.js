@@ -3,12 +3,12 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css'
 import { FormattedMessage } from 'react-intl';
 import React, { useContext } from 'react';
-import { AuthContext } from "context"
+import { AuthContext } from "contexts"
 
 export default function Home() {
-  const { loggedIn, setLoggedIn } = useContext(AuthContext)
+  const {  token, username, userId } = useContext(AuthContext)
 
-  console.log(loggedIn)
+  console.log( token, username, userId)
   return (
     <div className={styles.container}>
       <Head>
