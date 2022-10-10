@@ -26,7 +26,7 @@ export async function getStaticPaths() {
   const paths = items.map((e) => ({ params: { id: e.id.toString() } }));
   return {
     paths,
-    fallback: true, // Reload any id new for post added
+    fallback: true, // Reload any id new for events added
   };
 }
 
