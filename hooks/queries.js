@@ -12,7 +12,7 @@ export const EVENTS = gql`
   }
 `;
 
-export const GETEVENT = gql`
+export const GET_EVENT = gql`
   query GetIdEvents($eventId: ID!) {
     getIdEvents(eventId: $eventId) {
       id
@@ -20,6 +20,7 @@ export const GETEVENT = gql`
       description
       price
       date
+      creatorId
       creator {
         username
       }

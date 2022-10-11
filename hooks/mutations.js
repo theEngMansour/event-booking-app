@@ -19,3 +19,13 @@ export const CREATE_USER = gql`
     }
   }
 `;
+
+export const BOOK_EVENT = gql`
+  mutation BookEvent($eventId: ID!) {
+    bookEvent(eventId: $eventId) {
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`

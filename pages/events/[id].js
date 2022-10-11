@@ -1,10 +1,25 @@
+import React from "react";
 import prisma from "lib/prisma";
-import { useQuery } from "@apollo/client";
-import { GETEVENT } from "hooks/queries";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_EVENT } from "hooks/queries";
+import { BOOK_EVENT } from "hooks/mutations";
+import { useContext } from "react";
+import { AuthContext } from "contexts";
+import { Button } from "components";
 
 export default function Show({ params }) {
-  const { loading, error, data } = useQuery(GETEVENT, {
+  const { token, userId } = useContext(AuthContext);
+  const { loading, error, data } = useQuery(GET_EVENT, {
     variables: { eventId: params?.id },
+  });
+
+  const [bookEventHandler] = useMutation(BOOK_EVENT, {
+    onError: (error) => {
+      console.log(error);
+    },
+    onCompleted: () => {
+      console.log("تم حجز المناسبة بنجاح");
+    },
   });
 
   if (loading) return <p>Loading...</p>;
@@ -12,13 +27,20 @@ export default function Show({ params }) {
 
   return (
     <div>
-        <h1>{data?.getIdEvents?.title}</h1>
-        <h5>{data?.getIdEvents?.description}</h5>
-        <li>{data?.getIdEvents?.price}</li>
-        <li>{data?.getIdEvents?.date}</li>
-        <p>{data?.getIdEvents?.creator?.username}</p>
+      <h1>{data?.getIdEvents?.title}</h1>
+      <h5>{data?.getIdEvents?.description}</h5>
+      <li>{data?.getIdEvents?.price}</li>
+      <li>{data?.getIdEvents?.date}</li>
+      <p>{data?.getIdEvents?.creator?.username}</p>
+      <Button
+        token={token}
+        userId={userId}
+        creatorId={data?.getIdEvents?.creatorId}
+        eventId={data?.getIdEvents?.id}
+        bookEventHandler={bookEventHandler}
+      />
     </div>
-  )
+  );
 }
 
 export async function getStaticPaths() {
@@ -31,14 +53,5 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const item = await prisma.event.findUnique({
-    where: {
-      id: Number(params.id),
-    },
-  });
-  return {
-    props: {
-      params: JSON.parse(JSON.stringify(item)),
-    },
-  };
+  return { props: { params } };
 }
