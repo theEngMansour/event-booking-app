@@ -7,6 +7,7 @@ import { AuthContext } from "contexts";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState()
   const { setToken, setUserName, setUserId } = useContext(AuthContext)
   const router = useRouter();
   
@@ -20,11 +21,12 @@ export default function Login() {
       setUserId(data.login.userId);
       router.push("/events");
     },
-    onError: (error) => console.log(error.message),
+    onError: (error) => setAlert(error.message),
   });
 
   return (
     <React.Fragment>
+      <h1>{alert}</h1>
       <input
         type="email"
         value={email}

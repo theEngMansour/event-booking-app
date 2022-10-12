@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import { EVENTS} from "hooks/queries";
 import { AuthContext } from "contexts";
 
-export default function Event() {
+export default function Index() {
     const { userId } = useContext(AuthContext)
     const { loading, error, data } = useQuery(EVENTS);
 

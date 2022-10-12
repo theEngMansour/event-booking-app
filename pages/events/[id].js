@@ -3,11 +3,12 @@ import prisma from "lib/prisma";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_EVENT } from "hooks/queries";
 import { BOOK_EVENT } from "hooks/mutations";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "contexts";
 import { Button } from "components";
 
 export default function Show({ params }) {
+  const [alert, setAlert] = useState()
   const { token, userId } = useContext(AuthContext);
   const { loading, error, data } = useQuery(GET_EVENT, {
     variables: { eventId: params?.id },
@@ -15,18 +16,18 @@ export default function Show({ params }) {
 
   const [bookEventHandler] = useMutation(BOOK_EVENT, {
     onError: (error) => {
-      console.log(error);
+      setAlert(error.message);
     },
     onCompleted: () => {
-      console.log("تم حجز المناسبة بنجاح");
+      setAlert("تم حجز المناسبة بنجاح")
     },
   });
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error.message}</p>;
 
   return (
     <div>
+      <h1>{alert}</h1>
       <h1>{data?.getIdEvents?.title}</h1>
       <h5>{data?.getIdEvents?.description}</h5>
       <li>{data?.getIdEvents?.price}</li>

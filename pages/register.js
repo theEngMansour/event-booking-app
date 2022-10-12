@@ -8,6 +8,7 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState()
   const { setToken, setUserName, setUserId } = useContext(AuthContext)
   const router = useRouter();
 
@@ -21,11 +22,12 @@ export default function Register() {
       setUserId(data.createUser.userId);
       router.push("/events");
     },
-    onError: (error) => console.log(error.message),
+    onError: (error) => setAlert(error.message),
   });
 
   return (
     <React.Fragment>
+      <h1>{alert}</h1>
       <input
         type="text"
         value={username}
