@@ -41,3 +41,12 @@ export const CREATE_EVENT = gql`
     }
   }
 `
+
+export const CANCEL_BOOKING = gql`
+  mutation CancelBooking($bookingId: ID!){
+    cancelBooking(bookingId: $bookingId) {
+      id
+      title
+    }
+  }
+` 

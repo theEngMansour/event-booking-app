@@ -11,6 +11,9 @@ export const eventResolver = {
       try {
         const events = await prisma.event.findMany({
           include: { creator: true },
+          orderBy: {
+            id: 'desc'
+          }
         });
         return events.map((event) => transformEvent(event));
       } catch (error) {

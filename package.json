@@ -13,6 +13,7 @@
     "@prisma/client": "^4.4.0",
     "apollo-server-micro": "^3.10.2",
     "bcryptjs": "^2.4.3",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "formik": "^2.2.9",
     "graphql": "^16.6.0",
     "graphql-resolvers": "^0.4.2",

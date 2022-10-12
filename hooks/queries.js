@@ -27,3 +27,18 @@ export const GET_EVENT = gql`
     }
   }
 `;
+
+export const BOOKINGS = gql`
+  query Bookings {
+    bookings {
+      id
+      createdAt
+      event {
+        id
+        title
+        price
+        date
+      }
+    }
+  }
+`;

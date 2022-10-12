@@ -10,7 +10,10 @@ export const bookingResolver = {
     bookings: combineResolvers(isLoggedin, async (_, args, { user }) => {
       try {
         const bookings = await prisma.booking.findMany({
-          where: { id: user.id },
+          where: { userId: user.id },
+          include: { 
+            event: true
+          }
         });
         return bookings.map((booking) => transformBooking(booking));
       } catch (error) {

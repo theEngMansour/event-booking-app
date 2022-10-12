@@ -1,16 +1,13 @@
 import * as yup from "yup";
 import { useState } from "react";
 import { Formik } from "formik";
-import { useQuery, useMutation, useApolloClient } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { CREATE_EVENT } from "hooks/mutations";
-import { EVENTS} from "hooks/queries";
 import { useRouter } from "next/router";
 
 export default function Create() {
   const [alert, setAlert] = useState()
-  const client = useApolloClient()
   const router = useRouter();
-  const refetch = useQuery(EVENTS);
 
   const validationSchema = yup.object({
     title: yup
@@ -31,20 +28,16 @@ export default function Create() {
       .required("تاريخ مطلوب"),
   });
 
-  const [eventConfirmHandler, {loading, error, data}] = useMutation(CREATE_EVENT, {
+  const [eventConfirmHandler, { error }] = useMutation(CREATE_EVENT, {
     onError: (error) => {
       setAlert(error.message)
     },
     onCompleted: () => {
       setAlert("تم إضافة المناسبة بنجاح")
       router.push("/events");
-      client.refetchQueries({
-        include: ["Events"],
-      })
     }
   })
 
-  if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
 
   return (
